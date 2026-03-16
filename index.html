@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poconos 2026 — Face Club 7</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --forest: #182a1b;
+            --moss: #2a4430;
+            --pine: #3a6142;
+            --sage: #6b9e74;
+            --mist: #b0ccb4;
+            --cream: #f2ede4;
+            --gold: #c4a244;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--forest);
+            color: var(--cream);
+            overflow-x: hidden;
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 100svh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 3rem 3rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 80% 60% at 70% 30%, rgba(58, 97, 66, 0.35) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 40% at 10% 80%, rgba(42, 68, 48, 0.4) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(107, 158, 116, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(107, 158, 116, 0.05) 1px, transparent 1px);
+            background-size: 80px 80px;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        .hero-tag {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--sage);
+            margin-bottom: 1.25rem;
+            opacity: 0;
+            animation: up 0.6s ease 0.1s forwards;
+        }
+
+        .hero-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(5.5rem, 20vw, 16rem);
+            line-height: 0.85;
+            letter-spacing: 0.01em;
+            color: var(--cream);
+            opacity: 0;
+            animation: up 0.7s ease 0.25s forwards;
+        }
+
+        .hero-title .year {
+            color: var(--gold);
+            display: block;
+        }
+
+        .hero-meta {
+            margin-top: 2.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            opacity: 0;
+            animation: up 0.6s ease 0.45s forwards;
+        }
+
+        .hm-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--sage);
+            margin-bottom: 0.3rem;
+        }
+
+        .hm-value {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: 2.5rem;
+            right: 3rem;
+            writing-mode: vertical-rl;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--pine);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            opacity: 0;
+            animation: up 0.6s ease 0.9s forwards;
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 48px;
+            background: linear-gradient(to bottom, transparent, var(--pine));
+        }
+
+        /* NAV */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(24, 42, 27, 0.95);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(107, 158, 116, 0.12);
+        }
+
+        .nav-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            height: 52px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .nav-inner::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 0.08em;
+            color: var(--gold);
+            margin-right: auto;
+            white-space: nowrap;
+        }
+
+        nav a {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--mist);
+            text-decoration: none;
+            padding: 0 1rem;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            border-bottom: 2px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--cream);
+            border-bottom-color: var(--gold);
+        }
+
+        /* LAYOUT */
+        .wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 5rem 0;
+        }
+
+        .section-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--sage);
+            margin-bottom: 0.6rem;
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            line-height: 1;
+            color: var(--cream);
+            margin-bottom: 2.5rem;
+        }
+
+        hr.div {
+            border: none;
+            border-top: 1px solid rgba(107, 158, 116, 0.12);
+            margin: 0 2rem;
+        }
+
+        /* FACTS GRID */
+        .facts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1px;
+            background: rgba(107, 158, 116, 0.12);
+            border: 1px solid rgba(107, 158, 116, 0.12);
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 3rem;
+        }
+
+        .fact {
+            background: var(--forest);
+            padding: 1.5rem 1.25rem;
+            transition: background 0.2s;
+        }
+
+        .fact:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .fact-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--sage);
+            margin-bottom: 0.4rem;
+        }
+
+        .fact-value {
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .fact-value a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        .fact-value a:hover {
+            text-decoration: underline;
+        }
+
+        /* PROPERTY DESC */
+        .property-desc {
+            font-size: 1.1rem;
+            font-weight: 300;
+            color: var(--mist);
+            line-height: 1.8;
+            max-width: 680px;
+            margin-bottom: 3rem;
+        }
+
+        /* AMENITY CARDS */
+        .amenity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .amenity-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(107, 158, 116, 0.12);
+            border-radius: 10px;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .amenity-icon {
+            font-size: 1.25rem;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        .amenity-name {
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-bottom: 0.2rem;
+        }
+
+        .amenity-detail {
+            font-size: 0.8rem;
+            color: var(--mist);
+            font-weight: 300;
+            line-height: 1.5;
+        }
+
+        /* BEDROOMS */
+        .bedroom-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .bedroom-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(107, 158, 116, 0.12);
+            border-radius: 10px;
+            padding: 1.25rem;
+        }
+
+        .bedroom-num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--gold);
+            line-height: 1;
+            margin-bottom: 0.4rem;
+            opacity: 0.5;
+        }
+
+        .bedroom-name {
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .bedroom-beds {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--sage);
+            letter-spacing: 0.05em;
+        }
+
+        /* ACTIVITIES */
+        .activity-list {
+            border: 1px solid rgba(107, 158, 116, 0.12);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .activity-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            padding: 1.5rem 1.75rem;
+            border-bottom: 1px solid rgba(107, 158, 116, 0.1);
+            transition: background 0.2s;
+        }
+
+        .activity-row:last-child {
+            border-bottom: none;
+        }
+
+        .activity-row:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .act-icon {
+            font-size: 1.4rem;
+            flex-shrink: 0;
+            width: 2rem;
+            text-align: center;
+        }
+
+        .act-name {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 0.3rem;
+        }
+
+        .act-desc {
+            font-size: 0.85rem;
+            color: var(--mist);
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        .act-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-top: 0.6rem;
+        }
+
+        .tag {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.06em;
+            padding: 0.2rem 0.55rem;
+            border-radius: 4px;
+            background: rgba(42, 68, 48, 0.7);
+            border: 1px solid rgba(107, 158, 116, 0.15);
+            color: var(--mist);
+        }
+
+        /* NEARBY */
+        .nearby-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1px;
+            background: rgba(107, 158, 116, 0.12);
+            border: 1px solid rgba(107, 158, 116, 0.12);
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .nearby-item {
+            background: var(--forest);
+            padding: 1.1rem 1.5rem;
+            transition: background 0.2s;
+        }
+
+        .nearby-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .nearby-name {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.2rem;
+        }
+
+        .nearby-dist {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--sage);
+            letter-spacing: 0.05em;
+        }
+
+        .pass-note {
+            font-size: 0.85rem;
+            color: var(--mist);
+            font-weight: 300;
+            line-height: 1.7;
+        }
+
+        /* ITINERARY */
+        .days {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+        }
+
+        .day-row {
+            display: grid;
+            grid-template-columns: 110px 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        @media (max-width: 600px) {
+            .day-row {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+
+            .day-aside {
+                display: flex;
+                align-items: baseline;
+                gap: 0.75rem;
+            }
+
+            .day-num {
+                font-size: 2rem !important;
+            }
+        }
+
+        .day-aside {
+            position: sticky;
+            top: 72px;
+        }
+
+        .day-num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.5rem;
+            color: rgba(196, 162, 68, 0.2);
+            line-height: 1;
+        }
+
+        .day-name {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.15rem;
+        }
+
+        .day-date {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.62rem;
+            color: var(--sage);
+            letter-spacing: 0.08em;
+        }
+
+        .day-events {
+            border-left: 1px solid rgba(107, 158, 116, 0.2);
+            padding-left: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.1rem;
+        }
+
+        .event {
+            position: relative;
+        }
+
+        .event::before {
+            content: '';
+            position: absolute;
+            left: -1.65rem;
+            top: 0.45rem;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--moss);
+            border: 1.5px solid var(--pine);
+        }
+
+        .event-time {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.62rem;
+            color: var(--sage);
+            letter-spacing: 0.08em;
+            margin-bottom: 0.2rem;
+        }
+
+        .event-name {
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .event-note {
+            font-size: 0.8rem;
+            color: var(--mist);
+            font-weight: 300;
+            margin-top: 0.15rem;
+            line-height: 1.5;
+        }
+
+        /* PAYMENT */
+        .cost-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 600px) {
+            .cost-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .cost-card {
+            background: rgba(196, 162, 68, 0.07);
+            border: 1px solid rgba(196, 162, 68, 0.2);
+            border-radius: 12px;
+            padding: 1.75rem;
+        }
+
+        .cost-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--gold);
+            opacity: 0.8;
+            margin-bottom: 0.5rem;
+        }
+
+        .cost-amount {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            color: var(--gold);
+            line-height: 1;
+            margin-bottom: 0.4rem;
+        }
+
+        .cost-note {
+            font-size: 0.8rem;
+            color: var(--mist);
+            font-weight: 300;
+        }
+
+        .zelle-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(107, 158, 116, 0.15);
+            border-radius: 12px;
+            padding: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .zelle-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .zelle-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .zelle-lbl {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--sage);
+        }
+
+        .zelle-val {
+            font-size: 0.95rem;
+            font-weight: 400;
+        }
+
+        .pay-deadline {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--mist);
+            padding-top: 1rem;
+            border-top: 1px solid rgba(107, 158, 116, 0.12);
+            letter-spacing: 0.05em;
+        }
+
+        .pay-deadline span {
+            color: var(--gold);
+        }
+
+        /* FOOTER */
+        footer {
+            border-top: 1px solid rgba(107, 158, 116, 0.1);
+            padding: 3rem 2rem;
+            text-align: center;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--pine);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        /* REVEAL */
+        .r {
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity 0.55s ease, transform 0.55s ease;
+        }
+
+        .r.on {
+            opacity: 1;
+            transform: none;
+        }
+
+        @keyframes up {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-grid"></div>
+        <div class="hero-content">
+            <div class="hero-tag">Face Club 7 · Long Pond, PA</div>
+            <h1 class="hero-title">Poconos<span class="year">2026</span></h1>
+
+        </div>
+        <div class="hero-scroll">
+            <div class="scroll-line"></div>
+            scroll
+        </div>
+    </div>
+
+    <nav>
+        <div class="nav-inner">
+            <span class="nav-logo">Poconos '26</span>
+            <a href="#property">Property</a>
+            <a href="#activities">Activities</a>
+
+        </div>
+    </nav>
+
+    <!-- PROPERTY -->
+    <section id="property">
+        <div class="wrap">
+            <div class="section-label r">The House</div>
+            <h2 class="section-title r">Where We're Staying</h2>
+
+            <div class="facts r">
+                <div class="fact">
+                    <div class="fact-label">Dates</div>
+                    <div class="fact-value">Sept 25 – 28, 2026</div>
+                </div>
+                <div class="fact">
+                    <div class="fact-label">Location</div>
+                    <div class="fact-value">Long Pond, PA — Pocono Mountains</div>
+                </div>
+                <div class="fact">
+                    <div class="fact-label">Bedrooms / Baths</div>
+                    <div class="fact-value">5 BR · 7 Beds · 3 Baths</div>
+                </div>
+
+                <div class="fact">
+                    <div class="fact-label">Parking</div>
+                    <div class="fact-value">Free · up to 7 cars</div>
+                </div>
+
+                <div class="fact">
+                    <div class="fact-label">Listing</div>
+                    <div class="fact-value"><a
+                            href="https://www.airbnb.com/rooms/1530497113552374259?check_in=2026-09-25&check_out=2026-09-28&guests=1&adults=10&s=67&unique_share_id=f2027c71-3757-43d4-9e15-e2e7fdea31dc"
+                            target="_blank">View on Airbnb ↗</a></div>
+                </div>
+            </div>
+
+            <p class="property-desc r">Lakefront retreat on West Emerald Lake — panoramic views, private dock with
+                kayaks, indoor hot tub, firepit, and a game-filled basement. 1 acre lot, multiple decks, full kitchen,
+                and free parking for everyone.</p>
+
+            <div class="amenity-grid r">
+
+                <div class="amenity-card">
+                    <div class="amenity-icon">♨️</div>
+                    <div>
+                        <div class="amenity-name">Indoor Hot Tub</div>
+                        <div class="amenity-detail">Available all year, open 24 hours.</div>
+                    </div>
+                </div>
+                <div class="amenity-card">
+                    <div class="amenity-icon">🔥</div>
+                    <div>
+                        <div class="amenity-name">Fire Pit</div>
+                        <div class="amenity-detail">Seating for 10+ guests. Great for nights after gaming or karaoke.
+                        </div>
+                    </div>
+                </div>
+                <div class="amenity-card">
+                    <div class="amenity-icon">🎮</div>
+                    <div>
+                        <div class="amenity-name">Game Basement</div>
+                        <div class="amenity-detail">Ping-pong, board games, plus space for our own setups.</div>
+                    </div>
+                </div>
+                <div class="amenity-card">
+                    <div class="amenity-icon">🍖</div>
+                    <div>
+                        <div class="amenity-name">BBQ + Outdoor Decks</div>
+                        <div class="amenity-detail">Multiple decks, outdoor dining, picnic tables, and a full kitchen
+                            inside.</div>
+                    </div>
+                </div>
+                <div class="amenity-card">
+                    <div class="amenity-icon">📺</div>
+                    <div>
+                        <div class="amenity-name">Smart TVs + Fast WiFi</div>
+                        <div class="amenity-detail">Netflix, Hulu, HBO Max, Disney+, Amazon, Apple TV. High-speed
+                            internet throughout.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-label r" style="margin-bottom:0.75rem;">Sleeping Arrangements</div>
+            <div class="bedroom-grid r">
+                <div class="bedroom-card">
+                    <div class="bedroom-num">01</div>
+                    <div class="bedroom-name">Master Suite</div>
+                    <div class="bedroom-beds">King · Ensuite Bath</div>
+                </div>
+                <div class="bedroom-card">
+                    <div class="bedroom-num">02</div>
+                    <div class="bedroom-name">Bedroom 2</div>
+                    <div class="bedroom-beds">King · Desk</div>
+                </div>
+                <div class="bedroom-card">
+                    <div class="bedroom-num">03</div>
+                    <div class="bedroom-name">Bedroom 3</div>
+                    <div class="bedroom-beds">Queen</div>
+                </div>
+                <div class="bedroom-card">
+                    <div class="bedroom-num">04</div>
+                    <div class="bedroom-name">Bedroom 4</div>
+                    <div class="bedroom-beds">Queen</div>
+                </div>
+                <div class="bedroom-card">
+                    <div class="bedroom-num">05</div>
+                    <div class="bedroom-name">Bedroom 5</div>
+                    <div class="bedroom-beds">Queen + 2 Twins</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="div">
+
+    <!-- ACTIVITIES -->
+    <section id="activities">
+        <div class="wrap">
+            <div class="section-label r">What We're Doing</div>
+            <h2 class="section-title r">Activities</h2>
+
+            <div class="activity-list r">
+                <div class="activity-row">
+                    <div class="act-icon">🎮</div>
+                    <div>
+                        <div class="act-name">PC & Console Gaming</div>
+                        <div class="act-desc">Multi-station setup in the basement and common areas. Bring your rig,
+                            console, monitor, controllers, and cables.</div>
+                        <div class="act-tags">
+                            <span class="tag">PC or console</span>
+                            <span class="tag">Monitor</span>
+                            <span class="tag">Controllers + cables</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="activity-row">
+                    <div class="act-icon">🛶</div>
+                    <div>
+                        <div class="act-name">Boating on West Emerald Lake</div>
+                        <div class="act-desc">Kayaks, canoe, and peddle boat are included with the property off the
+                            private dock. Swimming is fair game too.</div>
+                        <div class="act-tags">
+                            <span class="tag">Swimwear</span>
+                            <span class="tag">Towel</span>
+                            <span class="tag">Sunscreen</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="activity-row">
+                    <div class="act-icon">🥾</div>
+                    <div>
+                        <div class="act-name">Hiking</div>
+                        <div class="act-desc">Trails throughout the Poconos nearby. Easy to moderate — specific trail
+                            TBD closer to the date.</div>
+                        <div class="act-tags">
+                            <span class="tag">Trail shoes</span>
+                            <span class="tag">Water bottle</span>
+                            <span class="tag">Bug spray</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="activity-row">
+                    <div class="act-icon">🎤</div>
+                    <div>
+                        <div class="act-name">Karaoke</div>
+                        <div class="act-desc">Nightly ritual. Everyone sings at least once. No excuses accepted.</div>
+                        <div class="act-tags">
+                            <span class="tag">No prep required</span>
+                            <span class="tag">Drink in hand</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="activity-row">
+                    <div class="act-icon">🥃</div>
+                    <div>
+                        <div class="act-name">Drinks & Firepit</div>
+                        <div class="act-desc">Stocked house and a firepit with seating for the whole crew. Drinks list
+                            to be coordinated closer to the trip.</div>
+                        <div class="act-tags">
+                            <span class="tag">TBD closer to date</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 3.5rem;">
+                <div class="section-label r" style="margin-bottom: 0.75rem;">Nearby (optional)</div>
+                <div class="nearby-grid r">
+                    <div class="nearby-item">
+                        <div class="nearby-name">Kalahari Waterpark</div>
+                        <div class="nearby-dist">12 min</div>
+                    </div>
+                    <div class="nearby-item">
+                        <div class="nearby-name">Mount Airy Casino</div>
+                        <div class="nearby-dist">15 min</div>
+                    </div>
+                    <div class="nearby-item">
+                        <div class="nearby-name">Pocono Outlets</div>
+                        <div class="nearby-dist">15 min</div>
+                    </div>
+                    <div class="nearby-item">
+                        <div class="nearby-name">Camelback Resort</div>
+                        <div class="nearby-dist">16 min</div>
+                    </div>
+                    <div class="nearby-item">
+                        <div class="nearby-name">Great Wolf Lodge</div>
+                        <div class="nearby-dist">18 min</div>
+                    </div>
+                    <div class="nearby-item">
+                        <div class="nearby-name">Emerald Lodge Grill & Bar</div>
+                        <div class="nearby-dist">On-site</div>
+                    </div>
+                </div>
+                <p class="pass-note r">The property is in the Emerald Lakes Community. A 3-day pass ($30/person) gets
+                    access to 5 lakes, 2 beaches, indoor pool, tennis, and pickleball — if anyone's interested.</p>
+            </div>
+        </div>
+    </section>
+
+
+
+    <footer>
+        Face Club 7 · Poconos 2026 · Long Pond, PA · Sept 25–28
+    </footer>
+
+    <script>
+        const els = document.querySelectorAll('.r');
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach((e, i) => {
+                if (e.isIntersecting) {
+                    setTimeout(() => e.target.classList.add('on'), i * 50);
+                    io.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.07 });
+        els.forEach(el => io.observe(el));
+    </script>
+</body>
+
+</html>
